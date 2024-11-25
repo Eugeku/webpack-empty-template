@@ -13,7 +13,7 @@
 
 ### Install webpack and webpack-cli
 
-    $ npm i webpack webpack-cli webpack-dev-server --save-dev
+    $ npm i webpack webpack-cli --save-dev
 
 ### Install webserver to see project
 
