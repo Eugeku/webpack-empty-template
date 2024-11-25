@@ -9,6 +9,7 @@
     - src/index.js
     - public/index.html
     - webpack.config.js
+    - .babelrc
     - .gitignore
 
 ### Install webpack and webpack-cli
