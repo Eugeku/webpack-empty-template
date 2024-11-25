@@ -1,62 +1,38 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, './src/app.js')
+        app: path.resolve(__dirname, './src/index.js')
     },
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'js/[name].bundle.js',
-        publicPath: '/'
+        filename: '[name].js',
+        path: path.resolve(__dirname, './dist'),
+        publicPath: '/dist',
+        clean: true
     },
     devServer: {
-        disableHostCheck: true
+        static: {
+            directory: path.resolve(__dirname, './public'),
+        },
+        client: {
+            overlay: true
+        },
+        open: true, // Automatically opens the browser
+        hot: true, // Enables hot module replacement
     },
     module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: ['babel-loader']
-            },
-            {
-                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'fonts/'
-                        }
-                    }
-                ]
-            }, // fonts
-            {
-                test: /\.(css|scss)$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-            }, // css and sass
-            {
-                test: /\.(png|jpe?g|gif|svg)$/i,
-                loader: 'file-loader',
-                options: {
-                    name: '[name].[ext]',
-                    outputPath: 'img/'
-                }
-            } // images
-        ]
+        rules: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: ['babel-loader']
+        }]
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './public/index.html'),
-            filename: 'index.html'
-        }),
-        new MiniCssExtractPlugin({
-            filename: 'css/style.css',
-        }),
-        new CleanWebpackPlugin()
-    ]
-}
+            inject: 'head', // Ensures scripts are injected in the heaD
+        })
+    ],
+    mode: 'development', // Explicitly specify development mode
+};
